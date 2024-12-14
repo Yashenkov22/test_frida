@@ -1,5 +1,6 @@
 import subprocess
 import os
+import time
 
 
 def get_process_name_from_file(file_path):
@@ -55,26 +56,42 @@ if __name__ == '__main__':
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
-        # res = subprocess.run(command,
-        #                     shell=True,
-        #                     text=True,
-        #                     capture_output=True)
         
-        # Ждем завершения процесса
-        # res.wait()
+        try:
+            # Чтение вывода в цикле
+            while True:
+                # Получаем строку из stdout
+                output = res.stdout.readline()
+                if output:
+                    print("STDOUT:", output.strip())
+                
+                # Проверяем завершение процесса
+                if res.poll() is not None:
+                    break
 
-        # Получаем код завершения
-        # print('status code', res.returncode)
-        
-        stdout, stderr = res.communicate()
-        
-        print("Output:", res.stdout)  # Вывод будет строкой
-        print("Стандартный вывод:")
-        print(stdout)
+                # Можно добавить небольшую задержку, чтобы не нагружать CPU
+                time.sleep(0.1)
 
+        except KeyboardInterrupt:
+            print("Завершение работы...")
+            res.terminate()  # Завершаем процесс при прерывании
+            res.wait()       # Ждем завершения процесса
+
+        # Проверяем наличие ошибок
+        stderr = res.stderr.read()
         if stderr:
-            print("Ошибки:")
-            print(stderr)
+            print("STDERR:", stderr.strip())
+
+        
+        # stdout, stderr = res.communicate()
+        
+        # print("Output:", res.stdout)  # Вывод будет строкой
+        # print("Стандартный вывод:")
+        # print(stdout)
+
+        # if stderr:
+        #     print("Ошибки:")
+        #     print(stderr)
     else:
         print("Процессы в файле закончились, обновите proccess.txt")
 
