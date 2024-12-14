@@ -47,7 +47,7 @@ if __name__ == '__main__':
     if first_line:
         command = f'./frida-ios-hook/frida-ios-hook/ioshook -n {first_line} -m i-url-req'
 
-        print('запускаю процесс на выполнение')
+        print(f'запускаю процесс на выполнение команды {command}')
 
         res = subprocess.Popen(command,
                             shell=True,
