@@ -64,17 +64,17 @@ if __name__ == '__main__':
         # res.wait()
 
         # Получаем код завершения
-        print('status code', res.returncode)
+        # print('status code', res.returncode)
         
-        # stdout, stderr = res.communicate()
+        stdout, stderr = res.communicate()
         
-        # print("Output:", res.stdout)  # Вывод будет строкой
-        # print("Стандартный вывод:")
-        # print(stdout)
+        print("Output:", res.stdout)  # Вывод будет строкой
+        print("Стандартный вывод:")
+        print(stdout)
 
-        # if stderr:
-        #     print("Ошибки:")
-        # print(stderr)
+        if stderr:
+            print("Ошибки:")
+        print(stderr)
     else:
         print("Имя процесса не найдено или процессы в файле закончились")
 
