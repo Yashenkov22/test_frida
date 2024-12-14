@@ -49,15 +49,16 @@ if __name__ == '__main__':
 
         print(f'запускаю процесс на выполнение команды {command}')
 
-        # res = subprocess.Popen(command,
-        #                     shell=True,
-        #                     text=True,
-        #                     stdout=subprocess.PIPE,
-        #                     stderr=subprocess.PIPE)
-        res = subprocess.run(command,
+        res = subprocess.Popen(command,
                             shell=True,
                             text=True,
-                            capture_output=True)
+                            stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
+        # res = subprocess.run(command,
+        #                     shell=True,
+        #                     text=True,
+        #                     capture_output=True)
         
         # Ждем завершения процесса
         # res.wait()
