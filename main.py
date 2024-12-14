@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
         if stderr:
             print("Ошибки:")
-        print(stderr)
+            print(stderr)
     else:
         print("Имя процесса не найдено или процессы в файле закончились")
 
