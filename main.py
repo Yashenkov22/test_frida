@@ -63,7 +63,7 @@ if __name__ == '__main__':
         # res.wait()
 
         # Получаем код завершения
-        print(res.returncode)
+        print('status code', res.returncode)
         
         # stdout, stderr = res.communicate()
         
