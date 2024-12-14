@@ -76,7 +76,7 @@ if __name__ == '__main__':
             print("Ошибки:")
             print(stderr)
     else:
-        print("Имя процесса не найдено или процессы в файле закончились")
+        print("Процессы в файле закончились, обновите proccess.txt")
 
     with open(file_path, 'w') as file:
         file.write(_file)
