@@ -49,21 +49,31 @@ if __name__ == '__main__':
 
         print(f'запускаю процесс на выполнение команды {command}')
 
-        res = subprocess.Popen(command,
+        # res = subprocess.Popen(command,
+        #                     shell=True,
+        #                     text=True,
+        #                     stdout=subprocess.PIPE,
+        #                     stderr=subprocess.PIPE)
+        res = subprocess.run(command,
                             shell=True,
                             text=True,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+                            capture_output=True)
         
-        stdout, stderr = res.communicate()
+        # Ждем завершения процесса
+        # res.wait()
+
+        # Получаем код завершения
+        print(res.returncode)
+        
+        # stdout, stderr = res.communicate()
         
         # print("Output:", res.stdout)  # Вывод будет строкой
-        print("Стандартный вывод:")
-        print(stdout)
+        # print("Стандартный вывод:")
+        # print(stdout)
 
-        if stderr:
-            print("Ошибки:")
-        print(stderr)
+        # if stderr:
+        #     print("Ошибки:")
+        # print(stderr)
     else:
         print("Имя процесса не найдено или процессы в файле закончились")
 
