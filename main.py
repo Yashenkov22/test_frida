@@ -47,10 +47,10 @@ if __name__ == '__main__':
         first_line, _file = get_process_name_from_file(file_path)
 
         if first_line:
-            # print(f'запускаю процесс на выполнение команды {command}')
 
             test_command = 'ls -a'
-
+            print(f'запускаю тестовый сабпроцесс на выполнение команды {test_command}')
+            
             test_res = subprocess.Popen(test_command,
                                 shell=True,
                                 text=True,
@@ -67,6 +67,7 @@ if __name__ == '__main__':
                 print("Ошибка:\n", error.strip())
 
             command = f'./frida-ios-hook/frida-ios-hook/ioshook -n {first_line} -m i-url-req'
+            print(f'запускаю сабпроцесс на выполнение команды {command}')
 
             res = subprocess.Popen(command,
                                 shell=True,
@@ -74,6 +75,17 @@ if __name__ == '__main__':
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
+            try:
+            # Получаем вывод и ошибки
+                output, error = res.communicate()
+
+                # Выводим результат в терминал
+                if output:
+                    print("Вывод:\n", output.strip())
+                if error:
+                    print("Ошибка:\n", error.strip())
+            except Exception:
+                pass
             
             with open(file_path, 'w') as file:
                 file.write(_file)
@@ -108,14 +120,20 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         print("Завершение работы...")
+        try:
         # Получаем вывод и ошибки
-        output, error = res.communicate()
+            output, error = res.communicate()
 
-        # Выводим результат в терминал
-        if output:
-            print("Вывод:\n", output.strip())
-        if error:
-            print("Ошибка:\n", error.strip())
+            # Выводим результат в терминал
+            if output:
+                print("Вывод:\n", output.strip())
+            if error:
+                print("Ошибка:\n", error.strip())
+        except Exception:
+            pass
+        finally:
+            with open(file_path, 'w') as file:
+                file.write(_file)
         # res.terminate()  # Завершаем процесс при прерывании
         # res.wait()       # Ждем завершения процесса
 
