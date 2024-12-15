@@ -42,45 +42,87 @@ def get_process_name_from_file(file_path):
 
 
 if __name__ == '__main__':
-    file_path = 'process.txt'
-    first_line, _file = get_process_name_from_file(file_path)
+    try:
+        file_path = 'process.txt'
+        first_line, _file = get_process_name_from_file(file_path)
 
-    if first_line:
-        command = f'./frida-ios-hook/frida-ios-hook/ioshook -n {first_line} -m i-url-req'
+        if first_line:
+            # print(f'запускаю процесс на выполнение команды {command}')
 
-        print(f'запускаю процесс на выполнение команды {command}')
+            test_command = 'ls -a'
 
-        res = subprocess.Popen(command,
-                            shell=True,
-                            text=True,
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
-        
-        try:
-            # Чтение вывода в цикле
-            while True:
-                # Получаем строку из stdout
-                output = res.stdout.readline()
-                if output:
-                    print("STDOUT:", output.strip())
-                
-                # Проверяем завершение процесса
-                if res.poll() is not None:
-                    break
+            test_res = subprocess.Popen(test_command,
+                                shell=True,
+                                text=True,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
 
-                # Можно добавить небольшую задержку, чтобы не нагружать CPU
-                time.sleep(0.1)
+            output, error = test_res.communicate()
 
-        except KeyboardInterrupt:
-            print("Завершение работы...")
-            res.terminate()  # Завершаем процесс при прерывании
-            res.wait()       # Ждем завершения процесса
+            # Выводим результат в терминал
+            if output:
+                print("Вывод:\n", output.strip())
+            if error:
+                print("Ошибка:\n", error.strip())
+
+            command = f'./frida-ios-hook/frida-ios-hook/ioshook -n {first_line} -m i-url-req'
+
+            res = subprocess.Popen(command,
+                                shell=True,
+                                text=True,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+            
+            with open(file_path, 'w') as file:
+                file.write(_file)
+        else:
+            print("Процессы в файле закончились, обновите proccess.txt")
+
+            # res = subprocess.run(command,
+            #                     shell=True,
+            #                     text=True,
+            #                     capture_output=True)
+            
+            # Ждем завершения процесса
+            # res.wait()
+
+            # Получаем код завершения
+            # print('status code', res.returncode)
+            
+            # try:
+            #     # Чтение вывода в цикле
+            #     while True:
+            #         # Получаем строку из stdout
+            #         output = res.stdout.readline()
+            #         if output:
+            #             print("STDOUT:", output.strip())
+                    
+            #         # Проверяем завершение процесса
+            #         if res.poll() is not None:
+            #             break
+
+            #         # Можно добавить небольшую задержку, чтобы не нагружать CPU
+            #         time.sleep(0.1)
+
+    except KeyboardInterrupt:
+        print("Завершение работы...")
+        # Получаем вывод и ошибки
+        output, error = res.communicate()
+
+        # Выводим результат в терминал
+        if output:
+            print("Вывод:\n", output.strip())
+        if error:
+            print("Ошибка:\n", error.strip())
+        # res.terminate()  # Завершаем процесс при прерывании
+        # res.wait()       # Ждем завершения процесса
 
         # Проверяем наличие ошибок
-        stderr = res.stderr.read()
-        if stderr:
-            print("STDERR:", stderr.strip())
+        # stderr = res.stderr.read()
+        # if stderr:
+        #     print("STDERR:", stderr.strip())
 
         
         # stdout, stderr = res.communicate()
@@ -92,8 +134,3 @@ if __name__ == '__main__':
         # if stderr:
         #     print("Ошибки:")
         #     print(stderr)
-    else:
-        print("Процессы в файле закончились, обновите proccess.txt")
-
-    with open(file_path, 'w') as file:
-        file.write(_file)
