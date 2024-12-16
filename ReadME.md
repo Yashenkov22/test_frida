@@ -6,7 +6,7 @@ git clone https://github.com/Yashenkov22/test_frida.git
 ```
 2. Перейти в папку
 ```
-cd test_frida
+cd test_frida/frida-ios-hook/frida-ios-hook
 ```
 3. Установить виртуальное окружение
 ```
@@ -22,11 +22,11 @@ source ./venv/bin/activate
 ```
 5. Установить зависимости
 ```
-pip install -r frida-ios-hook/requirements.txt
+pip install -r ./requirements.txt
 ```
 6. Собрать проект
 ```
-python3 frida-ios-hook/setup.py
+python3 setup.py
 ```
 
 7. Запустить скрипт

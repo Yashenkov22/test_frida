@@ -43,7 +43,7 @@ def get_process_name_from_file(file_path):
 
 if __name__ == '__main__':
     try:
-        file_path = 'process.txt'
+        file_path = './process.txt'
         first_line, _file = get_process_name_from_file(file_path)
 
         if first_line:
@@ -66,7 +66,25 @@ if __name__ == '__main__':
             if error:
                 print("Ошибка:\n", error.strip())
 
-            command = f'./frida-ios-hook/frida-ios-hook/ioshook -n {first_line} -m i-url-req'
+            test_frida_command = './ioshook --list-devices'
+            print(f'запускаю тестовый сабпроцесс на выполнение команды {test_frida_command}')
+            
+            test_res = subprocess.Popen(test_frida_command,
+                                shell=True,
+                                text=True,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+            output, error = test_res.communicate()
+
+            # Выводим результат в терминал
+            if output:
+                print("Вывод:\n", output.strip())
+            if error:
+                print("Ошибка:\n", error.strip())
+
+            command = f'./ioshook -n {first_line} -m i-url-req'
             print(f'запускаю сабпроцесс на выполнение команды {command}')
 
             res = subprocess.Popen(command,
