@@ -24,15 +24,14 @@ source ./venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-6. Перейти в папку с зависимостями
-```
-cd frida-ios-hook/
-```
-7. Собрать проект
+6. Собрать проект
 ```
 python3 setup.py
 ```
-
+7. Перейти в папку с зависимостями
+```
+cd frida-ios-hook/
+```
 8. Запустить скрипт
 ```
 python3 main.py
