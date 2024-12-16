@@ -99,7 +99,7 @@ if __name__ == '__main__':
             # Получаем вывод и ошибки
             # Читаем вывод в реальном времени
                 while True:
-                    print('вывожу результат в реальном времени...')
+                    # print('вывожу результат в реальном времени...')
                     output = res.stdout.readline()
                     if output == '' and res.poll() is not None:
                         break
