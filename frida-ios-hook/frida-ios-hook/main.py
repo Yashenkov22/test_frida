@@ -1,6 +1,7 @@
 import subprocess
 import os
 import time
+import threading
 
 
 def get_process_name_from_file(file_path):
@@ -10,6 +11,7 @@ def get_process_name_from_file(file_path):
         _file = file.read()
 
         return first_line.strip(), _file
+
 
 # file_path = 'process.txt'
 # first_line, _file = get_process_name_from_file(file_path)
@@ -93,6 +95,19 @@ if __name__ == '__main__':
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
+
+            def read_output():
+                """Функция для чтения вывода процесса в реальном времени."""
+                while True:
+                    output = res.stdout.readline()
+                    if output == '' and res.poll() is not None:
+                        break
+                    if output:
+                        print(output.strip())  # Выводим результат
+
+            output_thread = threading.Thread(target=read_output)
+
+            output_thread.start()
             
             try:
             # Получаем вывод и ошибки
@@ -141,6 +156,7 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         print("Завершение работы...")
+        output_thread.join()
         try:
         # Получаем вывод и ошибки
             output, error = res.communicate()
