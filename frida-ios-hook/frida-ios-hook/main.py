@@ -93,10 +93,12 @@ if __name__ == '__main__':
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
+            
             try:
             # Получаем вывод и ошибки
             # Читаем вывод в реальном времени
                 while True:
+                    res.stdout.flush()
                     output = res.stdout.readline()
                     if output == '' and res.poll() is not None:
                         break
