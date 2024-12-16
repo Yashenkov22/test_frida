@@ -1,7 +1,6 @@
 import subprocess
 import os
 import time
-import threading
 
 
 def get_process_name_from_file(file_path):
@@ -50,41 +49,41 @@ if __name__ == '__main__':
 
         if first_line:
 
-            test_command = 'ls -a'
-            print(f'запускаю тестовый сабпроцесс на выполнение команды {test_command}')
+            # test_command = 'ls -a'
+            # print(f'запускаю тестовый сабпроцесс на выполнение команды {test_command}')
             
-            test_res = subprocess.Popen(test_command,
-                                shell=True,
-                                text=True,
-                                stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
+            # test_res = subprocess.Popen(test_command,
+            #                     shell=True,
+            #                     text=True,
+            #                     stdin=subprocess.PIPE,
+            #                     stdout=subprocess.PIPE,
+            #                     stderr=subprocess.PIPE)
 
-            output, error = test_res.communicate()
+            # output, error = test_res.communicate()
 
-            # Выводим результат в терминал
-            if output:
-                print("Вывод:\n", output.strip())
-            if error:
-                print("Ошибка:\n", error.strip())
+            # # Выводим результат в терминал
+            # if output:
+            #     print("Вывод:\n", output.strip())
+            # if error:
+            #     print("Ошибка:\n", error.strip())
 
-            test_frida_command = './ioshook --list-devices'
-            print(f'запускаю тестовый сабпроцесс на выполнение команды {test_frida_command}')
+            # test_frida_command = './ioshook --list-devices'
+            # print(f'запускаю тестовый сабпроцесс на выполнение команды {test_frida_command}')
             
-            test_res = subprocess.Popen(test_frida_command,
-                                shell=True,
-                                text=True,
-                                stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
+            # test_res = subprocess.Popen(test_frida_command,
+            #                     shell=True,
+            #                     text=True,
+            #                     stdin=subprocess.PIPE,
+            #                     stdout=subprocess.PIPE,
+            #                     stderr=subprocess.PIPE)
 
-            output, error = test_res.communicate()
+            # output, error = test_res.communicate()
 
-            # Выводим результат в терминал
-            if output:
-                print("Вывод:\n", output.strip())
-            if error:
-                print("Ошибка:\n", error.strip())
+            # # Выводим результат в терминал
+            # if output:
+            #     print("Вывод:\n", output.strip())
+            # if error:
+            #     print("Ошибка:\n", error.strip())
 
             command = f'./ioshook -n {first_line} -m i-url-req'
             print(f'запускаю сабпроцесс на выполнение команды {command}')
@@ -95,19 +94,6 @@ if __name__ == '__main__':
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
-
-            def read_output():
-                """Функция для чтения вывода процесса в реальном времени."""
-                while True:
-                    output = res.stdout.readline()
-                    if output == '' and res.poll() is not None:
-                        break
-                    if output:
-                        print(output.strip())  # Выводим результат
-
-            output_thread = threading.Thread(target=read_output)
-
-            output_thread.start()
             
             try:
             # Получаем вывод и ошибки
@@ -156,7 +142,6 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         print("Завершение работы...")
-        output_thread.join()
         try:
         # Получаем вывод и ошибки
             output, error = res.communicate()
