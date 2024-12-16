@@ -319,6 +319,7 @@ def main():
                 method = open(method, 'r')
                 script = process.create_script(method.read())
                 script.load()
+                logger.info('[*] Жду ввод от устройства...')
                 sys.stdin.read()
             else:
                 logger.error('[x_x] Script for method not found!')
