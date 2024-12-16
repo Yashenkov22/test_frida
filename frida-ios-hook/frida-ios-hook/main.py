@@ -105,7 +105,6 @@ if __name__ == '__main__':
                         break
                     if output:
                         print(output.strip())  # Выводим результат
-                    time.sleep(1)
             except Exception:
                 pass
             
