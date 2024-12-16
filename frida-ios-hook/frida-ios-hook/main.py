@@ -98,12 +98,13 @@ if __name__ == '__main__':
             # Получаем вывод и ошибки
             # Читаем вывод в реальном времени
                 while True:
-                    res.stdout.flush()
+                    print('вывожу результат в реальном времени...')
                     output = res.stdout.readline()
                     if output == '' and res.poll() is not None:
                         break
                     if output:
                         print(output.strip())  # Выводим результат
+                    time.sleep(1)
             except Exception:
                 pass
             
