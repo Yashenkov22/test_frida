@@ -95,13 +95,13 @@ if __name__ == '__main__':
                                 stderr=subprocess.PIPE)
             try:
             # Получаем вывод и ошибки
-                output, error = res.communicate()
-
-                # Выводим результат в терминал
-                if output:
-                    print("Вывод:\n", output.strip())
-                if error:
-                    print("Ошибка:\n", error.strip())
+            # Читаем вывод в реальном времени
+                while True:
+                    output = res.stdout.readline()
+                    if output == '' and res.poll() is not None:
+                        break
+                    if output:
+                        print(output.strip())  # Выводим результат
             except Exception:
                 pass
             
